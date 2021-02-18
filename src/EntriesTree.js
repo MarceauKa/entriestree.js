@@ -63,8 +63,8 @@ export default class EntriesTree {
 
       elements.forEach(item => {
         if (parent) {
-          item._parentId = parent !== null ? parent[this.#itemKey] : null
-          item._hasSiblings = parent !== null ? parent.hasOwnProperty(this.#childKey) : null
+          item._parentId = parent ? parent[this.#itemKey] : null
+          item._hasSiblings = parent ? parent.hasOwnProperty(this.#childKey) : null
         }
 
         if (this.isNode(item)) {
