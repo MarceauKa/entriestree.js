@@ -2,13 +2,19 @@
 
 This library is intended to work with recursive array of data in Javascript.
 
-⚠️ This library is under active development (and not yet registered on NPM)
+⚠️ This library is under active development
 
-Run `demo.js` with `node --experimental-modules demo.js`
-
+- [Installation](#installation)
 - [Guide](#guide)
 - [Roadmap](#roadmap)
+- [Tests](#tests)
 - [Licence](#licence)
+
+## Installation
+
+⚠️ Not yet registered on NPM
+
+`npm i entriestree`
 
 ## Guide
 
@@ -130,6 +136,12 @@ tree.count()
 - [ ] Walk method
 - [ ] Flatten method
 - [ ] Publish on NPM
+
+# Tests
+
+Tests are made with [ava](https://github.com/avajs/ava)
+
+`npm run test`
 
 # Licence
 

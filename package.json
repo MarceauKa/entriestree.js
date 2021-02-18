@@ -1,12 +1,27 @@
 {
   "name": "entriestree",
+  "description": "Work with recursive array of data in Javascript",
+  "keywords": [
+    "array",
+    "recursive",
+    "manipulation",
+    "deep",
+    "objects"
+  ],
+  "author": "MarceauKa",
+  "homepage": "https://github.com/MarceauKa/entriestree.js#readme",
   "type": "module",
   "version": "0.0.1",
-  "description": "⚠️",
   "main": "src/EntriesTree.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava"
   },
-  "author": "MarceauKa",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarceauKa/entriestree.js.git"
+  },
+  "devDependencies": {
+    "ava": "^3.15.0"
+  }
 }
