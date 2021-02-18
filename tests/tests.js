@@ -5,19 +5,20 @@ import collectionWithCustomChildren from '../fixtures/collectionWithCustomChildr
 import EntriesTree from '../src/EntriesTree.js'
 
 test.beforeEach(t => {
-  t.context.tree = new EntriesTree(defaultCollection)
-})
-
-test('it returns null when item is not found ', t => {
-  t.is(t.context.tree.find(-1), null)
+  // Hm, we need a better alternative for deep copying!
+  t.context.tree = new EntriesTree(JSON.parse(JSON.stringify(defaultCollection)))
 })
 
 test('it finds root item', t => {
-  t.is(t.context.tree.find(1), defaultCollection[0])
+  t.is(t.context.tree.find(1).id, defaultCollection[0].id)
 })
 
 test('it finds children item', t => {
-  t.is(t.context.tree.find(8), defaultCollection[1].children[1].children[0])
+  t.is(t.context.tree.find(8).id, defaultCollection[1].children[1].children[0].id)
+})
+
+test('it returns null when item is not found ', t => {
+  t.is(t.context.tree.find(99), null)
 })
 
 test('it finds item from object', t => {
@@ -51,7 +52,20 @@ test('it finds parent item', t => {
   t.is(t.context.tree.parent(2), t.context.tree.find(1))
 })
 
-test.todo('it deletes item')
+test('it deletes root item', t => {
+  t.not(t.context.tree.delete(12), null)
+  t.is(t.context.tree.count(), 11)
+})
+
+test('it deletes children item', t => {
+  t.not(t.context.tree.delete(4), null)
+  t.is(t.context.tree.count(), 13)
+})
+
+test('it returns null when deleting unexisting item', t => {
+  t.is(t.context.tree.delete(99), null)
+  t.is(t.context.tree.count(), 14)
+})
 
 test.todo('it swaps items')
 

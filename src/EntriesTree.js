@@ -137,7 +137,9 @@ export default class EntriesTree {
 	 * @returns {EntriesTree}
 	 */
   update (toFind, updater) {
-    const invokable = (toFind, updater, elements) => {
+    toFind = this.find(toFind)
+
+    const invokable = (updater, elements) => {
       let stack = []
 
       elements.forEach(item => {
@@ -146,7 +148,7 @@ export default class EntriesTree {
         }
 
         if (this.isNode(item)) {
-          item[this.#childKey] = invokable(toFind, updater, item[this.#childKey])
+          item[this.#childKey] = invokable(updater, item[this.#childKey])
         }
 
         stack.push(item)
@@ -155,28 +157,58 @@ export default class EntriesTree {
       return stack
     }
 
-    this.setCollection(invokable(toFind, updater, this.#collection))
+    if (toFind) {
+      this.setCollection(invokable(updater, this.#collection))
+    }
 
     return this
   }
 
 	/**
-	 * @todo
-	 * @param {Object|string|number} block
+	 * @param {Object|string|number} toFind
+   * @returns {?Object}
 	 */
-  delete (block) {
+  delete (toFind) {
+    toFind = this.find(toFind)
 
+    let deleted = null
+
+    const invokable = (elements) => {
+      let stack = []
+
+      elements.forEach(item => {
+        if (this.isTheOne(toFind, item)) {
+          deleted = item
+
+          return
+        }
+
+        if (this.isNode(item)) {
+          item[this.#childKey] = invokable(item[this.#childKey])
+        }
+
+        stack.push(item)
+      })
+
+      return stack
+    }
+
+    if (toFind) {
+      this.setCollection(invokable(this.#collection))
+    }
+
+    return deleted
   }
 
 	/**
-	 * @param {Object|string|number} block
+	 * @param {Object|string|number} toFind
 	 * @returns {?Object}
 	 */
-  parent (block) {
-    block = this.find(block)
+  parent (toFind) {
+    toFind = this.find(toFind)
 
-    if (block._parentId) {
-      return this.find(block._parentId)
+    if (toFind && toFind._parentId) {
+      return this.find(toFind._parentId)
     }
 
     return null

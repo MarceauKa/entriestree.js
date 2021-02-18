@@ -6,7 +6,6 @@ This library is intended to work with recursive array of data in Javascript.
 
 - [Installation](#installation)
 - [Guide](#guide)
-- [Roadmap](#roadmap)
 - [Tests](#tests)
 - [Licence](#licence)
 
@@ -72,7 +71,7 @@ tree.find(collection[0].children[1])
 tree.find(3)
 // returns {id: 3, _parentId: null, _hasSiblings: true}
 
-tree.find('foo')
+tree.find(-1)
 // return null
 ```
 
@@ -119,23 +118,14 @@ tree.parent(4)
 
 ```js
 tree.delete(111)
-// no return
+// returns the deleted item
 
 tree.count()
 // returns 20 since {id: 111} as two children
+
+tree.delete(-1)
+// returns null
 ```
-
-# Roadmap
-
-- [x] Count method
-- [x] Find method
-- [x] Update method
-- [x] Parent method
-- [ ] Delete method
-- [ ] Swap method
-- [ ] Walk method
-- [ ] Flatten method
-- [ ] Publish on NPM
 
 # Tests
 
