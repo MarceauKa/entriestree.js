@@ -1,138 +1,184 @@
 export default class EntriesTree {
-	collection = []
-	itemKey = 'id'
-	childKey = 'children'
+  #collection = []
+  #itemKey = 'id'
+  #childKey = 'children'
 
-	constructor (collection = [], itemKey = 'id', childKey = 'children') {
-		this.itemKey = itemKey
-		this.childKey = childKey
-		this.setCollection(collection)
-	}
+  /**
+   * @constructor
+   * @param {Object[]} collection
+   * @param {?string} itemKey
+   * @param {?string} childKey
+   */
+  constructor (collection = [], itemKey = 'id', childKey = 'children') {
+    this.#itemKey = itemKey
+    this.#childKey = childKey
+    this.setCollection(collection)
+  }
 
-	getCollection () {
-		return this.collection
-	}
+  /**
+   * @returns {Object[]}
+   */
+  getCollection () {
+    return this.#collection
+  }
 
-	setCollection (collection) {
-		this.collection = this.parentize(collection)
+  /**
+   * @param {Object[]} collection
+   * @returns {EntriesTree}
+   */
+  setCollection (collection) {
+    this.#collection = this.parentize(collection)
 
-		return this
-	}
+    return this
+  }
 
-	isTheOne (findable, comparable) {
-		if (typeof findable === 'object'){
-			return findable[this.itemKey] === comparable[this.itemKey]
-		}
+  /**
+   * @param {Object|number|string} findable
+   * @param {Object} comparable
+   * @returns {boolean}
+   */
+  isTheOne (findable, comparable) {
+    if (typeof findable === 'object') {
+      return findable[this.#itemKey] === comparable[this.#itemKey]
+    }
 
-		return findable === comparable[this.itemKey]
-	}
+    return findable === comparable[this.#itemKey]
+  }
 
-	isNode (item) {
-		return item.hasOwnProperty(this.childKey)
-	}
+  /**
+   * @param {Object} item
+   * @returns {boolean}
+   */
+  isNode (item) {
+    return item.hasOwnProperty(this.#childKey)
+  }
 
-	parentize (elements) {
-		const invokable = (elements, parent = null) => {
-			let stack = []
+  /**
+   * @param {Object[]} elements
+   * @returns {Object[]}
+   */
+  parentize (elements) {
+    const invokable = (elements, parent = null) => {
+      let stack = []
 
-			elements.forEach(item => {
-				if (parent) {
-					item._parentId = parent !== null ? parent[this.itemKey] : null
-					item._hasSiblings = parent !== null ? parent.hasOwnProperty(this.childKey) : null
-				}
+      elements.forEach(item => {
+        if (parent) {
+          item._parentId = parent !== null ? parent[this.#itemKey] : null
+          item._hasSiblings = parent !== null ? parent.hasOwnProperty(this.#childKey) : null
+        }
 
-				if (this.isNode(item)) {
-					item[this.childKey] = invokable(item[this.childKey], item)
-				}
+        if (this.isNode(item)) {
+          item[this.#childKey] = invokable(item[this.#childKey], item)
+        }
 
-				stack.push(item)
-			})
+        stack.push(item)
+      })
 
-			return stack
-		}
+      return stack
+    }
 
-		return invokable(elements)
-	}
+    return invokable(elements)
+  }
 
-	count () {
-		const invokable = elements => {
-			let total = 0
+  /**
+   * @returns {number}
+   */
+  count () {
+    const invokable = elements => {
+      let total = 0
 
-			elements.forEach(item => {
-				total += 1
+      elements.forEach(item => {
+        total += 1
 
-				if (this.isNode(item)) {
-					total += invokable(item[this.childKey])
-				}
-			})
+        if (this.isNode(item)) {
+          total += invokable(item[this.#childKey])
+        }
+      })
 
-			return total
-		}
+      return total
+    }
 
-		return invokable(this.collection)
-	}
+    return invokable(this.#collection)
+  }
 
-	find (toFind) {
+	/**
+	 * @param {Object|string|number} toFind
+	 * @returns {?Object}
+	 */
+  find (toFind) {
 		const invokable = (toFind, elements, parent = null) => {
-			let found = null
+      let found = null
 
-			elements.some(item => {
-				if (found !== null) {
-					return false
-				}
+      elements.some(item => {
+        if (found !== null) {
+          return false
+        }
 
-				if (this.isTheOne(toFind, item)) {
-					found = item
+        if (this.isTheOne(toFind, item)) {
+          found = item
 
-					return false
-				} else if (this.isNode(item)) {
-					found = invokable(toFind, item[this.childKey], item)
+          return false
+        } else if (this.isNode(item)) {
+          found = invokable(toFind, item[this.#childKey], item)
 
-					return found !== null
-				}
-			})
+          return found !== null
+        }
+      })
 
-			return found
-		}
+      return found
+    }
 
-		return invokable(toFind, this.collection)
-	}
+    return invokable(toFind, this.#collection)
+  }
 
-	update (toFind, updater) {
-		const invokable = (toFind, updater, elements) => {
-			let stack = []
+	/**
+	 * @param {Object|string|number} toFind
+	 * @param {function} updater
+	 * @returns {EntriesTree}
+	 */
+  update (toFind, updater) {
+    const invokable = (toFind, updater, elements) => {
+      let stack = []
 
-			elements.forEach(item => {
-				if (this.isTheOne(toFind, item)) {
-					item = updater(item)
-				}
+      elements.forEach(item => {
+        if (this.isTheOne(toFind, item)) {
+          item = updater(item)
+        }
 
-				if (this.isNode(item)) {
-					item[this.childKey] = invokable(toFind, updater, item[this.childKey])
-				}
+        if (this.isNode(item)) {
+          item[this.#childKey] = invokable(toFind, updater, item[this.#childKey])
+        }
 
-				stack.push(item)
-			})
+        stack.push(item)
+      })
 
-			return stack
-		}
+      return stack
+    }
 
-		this.setCollection(invokable(toFind, updater, this.collection))
+    this.setCollection(invokable(toFind, updater, this.#collection))
 
-		return this
-	}
+    return this
+  }
 
-	delete (block) {
-		
-	}
+	/**
+	 * @todo
+	 * @param {Object|string|number} block
+	 */
+  delete (block) {
 
-	parent (block) {
-		block = this.find(block)
-		
-		if (block._parentId) {
-			return this.find(block._parentId)
-		}
+  }
 
-		return null
-	}
+	/**
+	 * @param {Object|string|number} block
+	 * @returns {?Object}
+	 */
+  parent (block) {
+    block = this.find(block)
+
+    if (block._parentId) {
+      return this.find(block._parentId)
+    }
+
+    return null
+  }
 }
