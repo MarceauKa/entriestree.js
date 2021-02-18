@@ -1,9 +1,11 @@
 import test from 'ava'
-import demoCollection from '../fixtures/dummy.js'
+import defaultCollection from '../fixtures/defaultCollection.js'
+import collectionWithCustomId from '../fixtures/collectionWithCustomId.js'
+import collectionWithCustomChildren from '../fixtures/collectionWithCustomChildren.js'
 import EntriesTree from '../src/EntriesTree.js'
 
 test.beforeEach(t => {
-  t.context.tree = new EntriesTree(demoCollection)
+  t.context.tree = new EntriesTree(defaultCollection)
 })
 
 test('it returns null when item is not found ', t => {
@@ -11,11 +13,25 @@ test('it returns null when item is not found ', t => {
 })
 
 test('it finds root item', t => {
-  t.is(t.context.tree.find(1), demoCollection[0])
+  t.is(t.context.tree.find(1), defaultCollection[0])
 })
 
 test('it finds children item', t => {
-  t.is(t.context.tree.find(8), demoCollection[1].children[1].children[0])
+  t.is(t.context.tree.find(8), defaultCollection[1].children[1].children[0])
+})
+
+test('it finds item from object', t => {
+  t.is(t.context.tree.find(defaultCollection[0].children[1]), t.context.tree.find(3))
+})
+
+test('it finds item with custom structure id', t => {
+  const tree = new EntriesTree(collectionWithCustomId, 'uuid')
+  t.is(tree.find('2210'), collectionWithCustomId[1].children[1].children[0])
+})
+
+test('it finds item with custom structure children', t => {
+  const tree = new EntriesTree(collectionWithCustomChildren, 'id', 'blocks')
+  t.is(tree.find(4), collectionWithCustomChildren[0].blocks[2])
 })
 
 test('it updates item', t => {
