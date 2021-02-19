@@ -2,7 +2,7 @@
 
 This library is intended to work with recursive array of data in Javascript.
 
-⚠️ This library is under active development
+⚠️ This package is production ready but it's in early stage of its development. Performances are not monitored yet (but it's tested)! 
 
 - [Installation](#installation)
 - [Guide](#guide)
@@ -10,8 +10,6 @@ This library is intended to work with recursive array of data in Javascript.
 - [Licence](#licence)
 
 ## Installation
-
-⚠️ Not yet registered on NPM
 
 `npm i entriestree`
 

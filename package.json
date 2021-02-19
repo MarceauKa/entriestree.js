@@ -11,7 +11,7 @@
   "author": "MarceauKa",
   "homepage": "https://github.com/MarceauKa/entriestree.js#readme",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "src/EntriesTree.js",
   "scripts": {
     "test": "ava"
