@@ -35,21 +35,56 @@ test('it finds item with custom structure children', t => {
   t.is(tree.find(4), collectionWithCustomChildren[0].blocks[2])
 })
 
+test('it count items', t => {
+  t.is(t.context.tree.count(), 14)
+})
+
+test('it parentizes items', t => {
+  t.is(t.context.tree.find(1)._parent, null)
+  t.is(t.context.tree.find(1)._deepness, 0)
+
+  t.is(t.context.tree.find(4)._parent, 1)
+  t.is(t.context.tree.find(4)._deepness, 1)
+
+  t.is(t.context.tree.find(10)._parent, 9)
+  t.is(t.context.tree.find(10)._deepness, 3)
+})
+
+test('it finds parent item', t => {
+  t.is(t.context.tree.parent(1), null)
+  t.is(t.context.tree.parent(2), t.context.tree.find(1))
+})
+
+test('it finds siblings of an item', t => {
+  let siblings = t.context.tree.siblings(1)
+  t.is(siblings.prevItem, null)
+  t.is(siblings.nextItem.id, 5)
+
+  siblings = t.context.tree.siblings(5)
+  t.is(siblings.prevItem.id, 1)
+  t.is(siblings.nextItem.id, 12)
+
+  siblings = t.context.tree.siblings(11)
+  t.is(siblings.prevItem.id, 10)
+  t.is(siblings.nextItem, null)
+})
+
+test('it finds siblings of an item from an object', t => {
+  let siblings = t.context.tree.siblings(t.context.tree.find(5))
+  t.is(siblings.prevItem.id, 1)
+  t.is(siblings.nextItem.id, 12)
+
+  siblings = t.context.tree.siblings(defaultCollection[1].children[1].children[1].children[0])
+  t.is(siblings.prevItem, null)
+  t.is(siblings.nextItem.id, 11)
+})
+
 test('it updates item', t => {
   t.context.tree.update(2, (item) => {
     item.type = 'updated'
     return item
   })
   t.is(t.context.tree.find(2).type, 'updated')
-})
-
-test('it count items', t => {
-  t.is(t.context.tree.count(), 14)
-})
-
-test('it finds parent item', t => {
-  t.is(t.context.tree.parent(1), null)
-  t.is(t.context.tree.parent(2), t.context.tree.find(1))
 })
 
 test('it deletes root item', t => {
@@ -66,9 +101,3 @@ test('it returns null when deleting unexisting item', t => {
   t.is(t.context.tree.delete(99), null)
   t.is(t.context.tree.count(), 14)
 })
-
-test.todo('it swaps items')
-
-test.todo('it walks tree')
-
-test.todo('it flattens tree')

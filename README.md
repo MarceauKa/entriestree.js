@@ -57,27 +57,25 @@ import EntriesTree from 'entriestree'
 const tree = new EntriesTree(collection, 'id', 'children')
 ```
 
-### Find an element
+### Find element
 
 Properties starting with `_` are added by the library.
 
 ```js
 tree.find(11)
-// returns {id: 11, children: [{id: 110, ...}, {id: 111, ...}], _parentId: 1, _hasSiblings: true}
+// returns {id: 11, children: [{id: 110, ...}, {id: 111, ...}], _parent: 1, _deepness: 1}
 
 tree.find(collection[0].children[1])
 // same as above (collection[0] => {id: 1}, children[1] => {id: 11})
 
 tree.find(3)
-// returns {id: 3, _parentId: null, _hasSiblings: true}
+// returns {id: 3, _parent: null, _deepness: 0, ...}
 
 tree.find(-1)
 // return null
 ```
 
-Find method has only one argument: pass the value of the wanted item key such as `1` in `[{id: 1}]` or; pass the value of the wanted item such as `{id: 1}` for the the collection `[{id: 1}, {id: 2}]`.
-
-### Count tree elements
+### Count elements
 
 It's super easy to get the collection length (recursively).
 
@@ -86,7 +84,7 @@ tree.count()
 // returns 23 in our sample data
 ````
 
-### Update a specific tree element
+### Update element
 
 ```js
 tree.find(221)
@@ -101,7 +99,20 @@ tree.find(221)
 // returns {id: 221, foo: 'bar', ...}
 ```
 
-### Get the parent of an element
+### Delete element
+
+```js
+tree.delete(111)
+// returns the deleted item
+
+tree.count()
+// returns 20 since {id: 111} as two children
+
+tree.delete(-1)
+// returns null
+```
+
+### Get element's parent
 
 ```js
 tree.parent(110)
@@ -114,17 +125,17 @@ tree.parent(4)
 // returns null because {id: 4} is a root element
 ```
 
-### Delete an element
+### Get element's siblings
 
 ```js
-tree.delete(111)
-// returns the deleted item
+tree.siblings(1)
+// returns {prevItem: null, nextItem: {id: 2, ...}}
 
-tree.count()
-// returns 20 since {id: 111} as two children
+tree.siblings(111)
+// returns {prevItem: {id: 110, ...}, nextItem: {id: 112, ...}}
 
-tree.delete(-1)
-// returns null
+tree.siblings(-1)
+// returns {prevItem: null, nextItem: null}
 ```
 
 # Tests
