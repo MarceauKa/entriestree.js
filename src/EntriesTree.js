@@ -1,8 +1,4 @@
 export default class EntriesTree {
-  collection = []
-  itemKey = 'id'
-  childKey = 'children'
-
   /**
    * @constructor
    * @param {Object[]} collection
