@@ -136,6 +136,13 @@ tree.siblings(-1)
 // returns {prevItem: null, nextItem: null}
 ```
 
+### Loop over flattened elements
+
+```js
+tree.iterable()
+// return [{id: 1, ...}, {id: 2, ...}, {id: 3, ...}, ...]
+```
+
 # Tests
 
 Tests are made with [ava](https://github.com/avajs/ava)

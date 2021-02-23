@@ -9,6 +9,17 @@ test.beforeEach(t => {
   t.context.tree = new EntriesTree(JSON.parse(JSON.stringify(defaultCollection)))
 })
 
+test('it walks through items', t => {
+  let loop = 0
+
+  for (let item of t.context.tree.iterable()) {
+    t.is(item.id, loop + 1)
+    loop++
+  }
+
+  t.is(t.context.tree.iterable().length, 14)
+})
+
 test('it finds root item', t => {
   t.is(t.context.tree.find(1).id, defaultCollection[0].id)
 })

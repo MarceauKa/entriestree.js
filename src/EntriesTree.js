@@ -79,6 +79,27 @@ export default class EntriesTree {
   }
 
   /**
+   * @returns {Object[]}
+   */
+  iterable () {
+    const invokable = (elements, parent = []) => {
+      let stack = parent
+
+      elements.forEach(item => {
+        stack.push(item)
+
+        if (this.#isNode(item)) {
+          stack = invokable(item[this.#childKey], stack)
+        }
+      })
+
+      return stack
+    }
+
+    return invokable(this.#collection)
+  }
+
+  /**
    * @returns {number}
    */
   count () {
