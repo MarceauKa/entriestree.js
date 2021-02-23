@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.2.2 (2021-02-23)
+
+- Remove usage of ES properties
+
 ## 0.2.1 (2021-02-23)
 
 - Remove usage of ES private properties
