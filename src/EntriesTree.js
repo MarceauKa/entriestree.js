@@ -1,7 +1,7 @@
 export default class EntriesTree {
-  #collection = []
-  #itemKey = 'id'
-  #childKey = 'children'
+  collection = []
+  itemKey = 'id'
+  childKey = 'children'
 
   /**
    * @constructor
@@ -10,24 +10,24 @@ export default class EntriesTree {
    * @param {?string} childKey
    */
   constructor (collection = [], itemKey = 'id', childKey = 'children') {
-    this.#itemKey = itemKey
-    this.#childKey = childKey
-    this.#setCollection(collection)
+    this.itemKey = itemKey
+    this.childKey = childKey
+    this.setCollection(collection)
   }
 
   /**
    * @returns {Object[]}
    */
   getCollection () {
-    return this.#collection
+    return this.collection
   }
 
   /**
    * @param {Object[]} collection
    * @returns {EntriesTree}
    */
-  #setCollection (collection) {
-    this.#collection = this.#parentize(collection)
+  setCollection (collection) {
+    this.collection = this.parentize(collection)
 
     return this
   }
@@ -37,36 +37,36 @@ export default class EntriesTree {
    * @param {Object} comparable
    * @returns {boolean}
    */
-  #isTheOne (findable, comparable) {
+  isTheOne (findable, comparable) {
     if (typeof findable === 'object') {
-      return findable[this.#itemKey] === comparable[this.#itemKey]
+      return findable[this.itemKey] === comparable[this.itemKey]
     }
 
-    return findable === comparable[this.#itemKey]
+    return findable === comparable[this.itemKey]
   }
 
   /**
    * @param {Object} item
    * @returns {boolean}
    */
-  #isNode (item) {
-    return item.hasOwnProperty(this.#childKey)
+  isNode (item) {
+    return item.hasOwnProperty(this.childKey)
   }
 
   /**
    * @param {Object[]} elements
    * @returns {Object[]}
    */
-  #parentize (elements) {
+  parentize (elements) {
     const invokable = (elements, parent = null) => {
       let stack = []
 
       elements.forEach(item => {
-        item._parent = parent ? parent[this.#itemKey] : null
+        item._parent = parent ? parent[this.itemKey] : null
         item._deepness = parent ? parent._deepness + 1 : 0
 
-        if (this.#isNode(item)) {
-          item[this.#childKey] = invokable(item[this.#childKey], item)
+        if (this.isNode(item)) {
+          item[this.childKey] = invokable(item[this.childKey], item)
         }
 
         stack.push(item)
@@ -88,15 +88,15 @@ export default class EntriesTree {
       elements.forEach(item => {
         stack.push(item)
 
-        if (this.#isNode(item)) {
-          stack = invokable(item[this.#childKey], stack)
+        if (this.isNode(item)) {
+          stack = invokable(item[this.childKey], stack)
         }
       })
 
       return stack
     }
 
-    return invokable(this.#collection)
+    return invokable(this.collection)
   }
 
   /**
@@ -109,15 +109,15 @@ export default class EntriesTree {
       elements.forEach(item => {
         total += 1
 
-        if (this.#isNode(item)) {
-          total += invokable(item[this.#childKey])
+        if (this.isNode(item)) {
+          total += invokable(item[this.childKey])
         }
       })
 
       return total
     }
 
-    return invokable(this.#collection)
+    return invokable(this.collection)
   }
 
   /**
@@ -133,12 +133,12 @@ export default class EntriesTree {
           return false
         }
 
-        if (this.#isTheOne(toFind, item)) {
+        if (this.isTheOne(toFind, item)) {
           found = item
 
           return false
-        } else if (this.#isNode(item)) {
-          found = invokable(toFind, item[this.#childKey], item)
+        } else if (this.isNode(item)) {
+          found = invokable(toFind, item[this.childKey], item)
 
           return found !== null
         }
@@ -147,7 +147,7 @@ export default class EntriesTree {
       return found
     }
 
-    return invokable(toFind, this.#collection)
+    return invokable(toFind, this.collection)
   }
 
   /**
@@ -162,12 +162,12 @@ export default class EntriesTree {
       let stack = []
 
       elements.forEach(item => {
-        if (this.#isTheOne(toFind, item)) {
+        if (this.isTheOne(toFind, item)) {
           item = updater(item)
         }
 
-        if (this.#isNode(item)) {
-          item[this.#childKey] = invokable(updater, item[this.#childKey])
+        if (this.isNode(item)) {
+          item[this.childKey] = invokable(updater, item[this.childKey])
         }
 
         stack.push(item)
@@ -177,7 +177,7 @@ export default class EntriesTree {
     }
 
     if (toFind) {
-      this.#setCollection(invokable(updater, this.#collection))
+      this.setCollection(invokable(updater, this.collection))
     }
 
     return this
@@ -196,14 +196,14 @@ export default class EntriesTree {
       let stack = []
 
       elements.forEach(item => {
-        if (this.#isTheOne(toFind, item)) {
+        if (this.isTheOne(toFind, item)) {
           deleted = item
 
           return
         }
 
-        if (this.#isNode(item)) {
-          item[this.#childKey] = invokable(item[this.#childKey])
+        if (this.isNode(item)) {
+          item[this.childKey] = invokable(item[this.childKey])
         }
 
         stack.push(item)
@@ -213,7 +213,7 @@ export default class EntriesTree {
     }
 
     if (toFind) {
-      this.#setCollection(invokable(this.#collection))
+      this.setCollection(invokable(this.collection))
     }
 
     return deleted
@@ -249,7 +249,7 @@ export default class EntriesTree {
       return siblings
     }
 
-    let collection = toFind._parent ? this.find(toFind._parent)[this.#childKey] : this.#collection
+    let collection = toFind._parent ? this.find(toFind._parent)[this.childKey] : this.collection
     let index = collection.indexOf(toFind)
 
     if (index === -1) {
