@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.2.1 (2021-02-23)
+
+- Remove usage of ES private properties
+- Improved `.gitignore`
+
 ## 0.2.0 (2021-02-23)
 
 - Add `iterable` method
