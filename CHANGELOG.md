@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Unreleased
+
+- Add `copy` method
+- `setCollection` now accepts a `copy` argument
+
 ## 0.2.2 (2021-02-23)
 
 - Remove usage of ES properties

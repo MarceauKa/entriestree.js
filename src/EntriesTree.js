@@ -20,12 +20,45 @@ export default class EntriesTree {
 
   /**
    * @param {Object[]} collection
+   * @param {boolean} clone
    * @returns {EntriesTree}
    */
-  setCollection (collection) {
+  setCollection (collection, clone = false) {
+    if (clone) {
+      collection = this.clone(collection)
+    }
+
     this.collection = this.parentize(collection)
 
     return this
+  }
+
+  /**
+   * @param {?Object[]} collection
+   * @return {Object[]}
+   */
+  clone (collection = null) {
+    let cloner = (elements, stack = []) => {
+      elements.forEach(item => {
+        let copy = {}
+
+        Object.keys(item).forEach(key => {
+          let value = item[key]
+
+          if (Object.prototype.toString.call(value) === '[object Object]' || Array.isArray(value)) {
+            copy[key] = cloner(value)
+          } else {
+            copy[key] = value
+          }
+        })
+
+        stack.push(copy)
+      })
+
+      return stack
+    }
+
+    return cloner(collection || this.collection, [])
   }
 
   /**

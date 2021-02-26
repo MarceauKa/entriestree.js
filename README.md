@@ -143,6 +143,26 @@ tree.iterable()
 // return [{id: 1, ...}, {id: 2, ...}, {id: 3, ...}, ...]
 ```
 
+### Deep clone a collection
+
+Sometimes it's useful to work on a copy of your elements without noising your original collection.
+
+```js
+const tree = new EntriesTree().setCollection(collection, true)
+// collection will be untouched
+
+const tree = new EntriesTree().clone(collection)
+// same as above
+
+tree.update(1, (item) => {
+  item.foo = 'bar'
+  return item
+})
+
+collection[0].foo !== tree.find(1).foo
+// returns false
+```
+
 # Tests
 
 Tests are made with [ava](https://github.com/avajs/ava)

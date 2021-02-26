@@ -5,8 +5,7 @@ import collectionWithCustomChildren from '../fixtures/collectionWithCustomChildr
 import EntriesTree from '../src/EntriesTree.js'
 
 test.beforeEach(t => {
-  // Hm, we need a better alternative for deep copying!
-  t.context.tree = new EntriesTree(JSON.parse(JSON.stringify(defaultCollection)))
+  t.context.tree = new EntriesTree().setCollection(defaultCollection, true)
 })
 
 test('it walks through items', t => {
@@ -59,6 +58,37 @@ test('it parentizes items', t => {
 
   t.is(t.context.tree.find(10)._parent, 9)
   t.is(t.context.tree.find(10)._deepness, 3)
+})
+
+test('it clones tree', t => {
+  let collection = [{ id: 1, children: [{ id: 2 }, { id: 3, children: [{ id: 4 }] }] }]
+  let originalTree = new EntriesTree(collection)
+  let copyTree = new EntriesTree(originalTree.clone())
+
+  originalTree.update(2, (item) => {
+    item.foo = 'bar'
+    return item
+  })
+
+  t.is(originalTree.count(), copyTree.count())
+
+  t.not(originalTree.find(2), copyTree.find(2))
+  t.is(originalTree.find(2).id, copyTree.find(2).id)
+
+  copyTree.update(4, (item) => {
+    item.test = 'foo'
+    return item
+  })
+
+  originalTree.update(4, (item) => {
+    item.test = 'bar'
+    return item
+  })
+
+  t.not(originalTree.find(4).test, copyTree.find(4).test)
+
+  originalTree.delete(3)
+  t.not(originalTree.count(), copyTree.count())
 })
 
 test('it finds parent item', t => {
