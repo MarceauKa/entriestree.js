@@ -38,7 +38,7 @@ export default class EntriesTree {
    * @return {Object[]}
    */
   clone (collection = null) {
-    let cloner = (elements, stack = []) => {
+    const cloner = (elements, stack = []) => {
       elements.forEach(item => {
         let copy = {}
 
@@ -147,6 +147,32 @@ export default class EntriesTree {
     }
 
     return invokable(this.collection)
+  }
+
+  /**
+   * @param {Object|string|number} toFind
+   * @returns {number}
+   */
+  countFrom (toFind) {
+    toFind = this.find(toFind)
+
+    const counter = (elements, total = 0) => {
+      elements.forEach(item => {
+        total += 1
+
+        if (this.isNode(item)) {
+          total += counter(item[this.childKey], total)
+        }
+      })
+
+      return total
+    }
+
+    if (toFind && this.isNode(toFind)) {
+      return counter(toFind[this.childKey])
+    }
+
+    return 0
   }
 
   /**

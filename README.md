@@ -80,6 +80,9 @@ It's super easy to get the collection length (recursively).
 ```js
 tree.count()
 // returns 23 in our sample data
+
+tree.countFrom(11)
+// returns 5, item #11 has 3 direct children and #111 has 2 children
 ````
 
 ### Update element

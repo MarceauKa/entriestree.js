@@ -49,6 +49,13 @@ test('it count items', t => {
   t.is(t.context.tree.count(), 14)
 })
 
+test('it count items from item', t => {
+  t.is(t.context.tree.countFrom(1), 3)
+  t.is(t.context.tree.countFrom(99), 0)
+  t.is(t.context.tree.countFrom(4), 0)
+  t.is(t.context.tree.countFrom(9), 2)
+})
+
 test('it parentizes items', t => {
   t.is(t.context.tree.find(1)._parent, null)
   t.is(t.context.tree.find(1)._deepness, 0)

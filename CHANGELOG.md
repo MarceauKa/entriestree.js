@@ -2,8 +2,8 @@
 
 ## Unreleased
 
-- Add `copy` method
-- `setCollection` now accepts a `copy` argument
+- Add `clone` method and `setCollection` now accepts a `clone` argument
+- Add `countFrom` method
 
 ## 0.2.2 (2021-02-23)
 
