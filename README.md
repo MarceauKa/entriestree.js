@@ -17,7 +17,7 @@ This package is available on [NPM](https://www.npmjs.com/package/entriestree).
 
 ### Example data
 
-This kind of data looks familiar? This is the sample data used below.
+This kind of data looks familiar? This is the sample data used below. You'll find this [sample data](https://github.com/MarceauKa/entriestree.js/blob/master/fixtures/readmeCollection.js) in `fixtures/readmeCollection.js`.
 
 ```
 - {id: 1, ...}
@@ -47,8 +47,7 @@ This kind of data looks familiar? This is the sample data used below.
 
 ## Initialization
 
-In this example, `collection` is our structure and each item has an unique identifier called `id`. Child items are
-stored in a property called `children`.
+In this example, `collection` is our structure and each item has an unique identifier called `id` (_customizable_). Child items are stored in a property called `children` (_customizable too_).
 
 ```js
 import collection from '...' // above sample data
