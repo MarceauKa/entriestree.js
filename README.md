@@ -4,16 +4,21 @@ This library is intended to work with recursive array of data in Javascript.
 
 - [Installation](#installation)
 - [Guide](#guide)
+- [API](#api)
 - [Tests](#tests)
 - [Licence](#licence)
 
 ## Installation
+
+⬆️ [Top](#entriestreejs) ➡️ [Guide](#guide) 
 
 This package is available on [NPM](https://www.npmjs.com/package/entriestree).
 
 `npm i entriestree`
 
 ## Guide
+
+⬆️ [Top](#entriestreejs) ➡️ [API](#api)
 
 ### Example data
 
@@ -45,7 +50,7 @@ This kind of data looks familiar? This is the sample data used below. You'll fin
 	- {id: 42, ...}
 ```
 
-## Initialization
+### Initialization
 
 In this example, `collection` is our structure and each item has an unique identifier called `id` (_customizable_). Child items are stored in a property called `children` (_customizable too_).
 
@@ -67,7 +72,7 @@ tree.find(collection[0].children[1])
 // same as above (collection[0] => {id: 1}, children[1] => {id: 11})
 
 tree.find(3) // returns {id: 3, _parent: null, _deepness: 0, ...}
-tree.find(-1) // return null
+tree.find(-1) // returns null
 ```
 
 Also, you can find the nearest ancestor.
@@ -135,7 +140,7 @@ tree.siblings(-1)
 ### Loop over flattened elements
 
 ```js
-tree.iterable() // return [{id: 1, ...}, {id: 2, ...}, {id: 3, ...}, ...]
+tree.iterable() // returns [{id: 1, ...}, {id: 2, ...}, {id: 3, ...}, ...]
 ```
 
 ### Deep clone a collection
@@ -157,12 +162,39 @@ collection[0].foo !== tree.find(1).foo
 // returns false
 ```
 
+# API
+
+⬆️ [Top](#entriestreejs) ➡️ [Tests](#tests)
+
+| Method | Params | Return |
+|--------|--------|--------|
+| `constructor` | `{Object[]} collection = []`, `{string} id = 'id'`, `{string} childkey` | `{EntriesTree}` |
+| `setCollection` | `{Object[]} collection = []`, `{boolean} clone` | `{EntriesTree}` |
+| `getCollection` |  | `{Object[]}` |
+| `clone` | `{?Object[]} collection = null` | `{Object[]}` |
+| `isTheOne` | `{Object,number,string} findable`, `{Object} comparable` | `{boolean}` |
+| `isNode` | `{Object} item` | `{boolean}` |
+| `parentize` | `{Object[]} elements` | `{Object[]}` |
+| `iterable` | `{Object[]}` |  |
+| `count` | | `@returns {number}` |
+| `countFrom` | `{Object,string,number} toFind` | `{number}` |
+| `find` | `{Object,string,number} toFind` | `{?Object}` |
+| `findAncestor` | `{Object,string,number} toFind` | `{?Object}` |
+| `update` | `{Object,string,number} toFind`, `{function} updater` | `{EntriesTree}` |
+| `delete` | `{Object,string,number} toFind` | `{?Object}` |
+| `parent` | `{Object,string,number} toFind` | `{?Object}` |
+| `siblings` | `{Object,string,number} toFind` | `{?Object}` |
+
 # Tests
+
+⬆️ [Top](#entriestreejs) ➡️ [Licence](#licence)
 
 Tests are made with [ava](https://github.com/avajs/ava)
 
 `npm run test`
 
 # Licence
+
+⬆️ [Top](#entriestreejs)
 
 MIT

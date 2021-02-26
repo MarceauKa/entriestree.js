@@ -2,8 +2,8 @@ export default class EntriesTree {
   /**
    * @constructor
    * @param {Object[]} collection
-   * @param {?string} itemKey
-   * @param {?string} childKey
+   * @param {string} itemKey
+   * @param {string} childKey
    */
   constructor (collection = [], itemKey = 'id', childKey = 'children') {
     this.itemKey = itemKey
