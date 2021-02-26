@@ -207,6 +207,28 @@ export default class EntriesTree {
 
   /**
    * @param {Object|string|number} toFind
+   * @returns {?Object}
+   */
+  findAncestor (toFind) {
+    toFind = this.find(toFind)
+
+    const finder = element => {
+      if (element._parent) {
+        return finder(this.find(element._parent))
+      }
+
+      return element
+    }
+
+    if (toFind) {
+      return finder(toFind)
+    }
+
+    return null
+  }
+
+  /**
+   * @param {Object|string|number} toFind
    * @param {function} updater
    * @returns {EntriesTree}
    */

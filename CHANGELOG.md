@@ -4,6 +4,7 @@
 
 - Add `clone` method and `setCollection` now accepts a `clone` argument
 - Add `countFrom` method
+- Add `findAncestor` method
 
 ## 0.2.2 (2021-02-23)
 

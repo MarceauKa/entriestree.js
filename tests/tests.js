@@ -21,17 +21,8 @@ test('it walks through items', t => {
 
 test('it finds root item', t => {
   t.is(t.context.tree.find(1).id, defaultCollection[0].id)
-})
-
-test('it finds children item', t => {
   t.is(t.context.tree.find(8).id, defaultCollection[1].children[1].children[0].id)
-})
-
-test('it returns null when item is not found ', t => {
   t.is(t.context.tree.find(99), null)
-})
-
-test('it finds item from object', t => {
   t.is(t.context.tree.find(defaultCollection[0].children[1]), t.context.tree.find(3))
 })
 
@@ -43,6 +34,13 @@ test('it finds item with custom structure id', t => {
 test('it finds item with custom structure children', t => {
   const tree = new EntriesTree(collectionWithCustomChildren, 'id', 'blocks')
   t.is(tree.find(4), collectionWithCustomChildren[0].blocks[2])
+})
+
+test('it finds ancestor', t => {
+  t.is(t.context.tree.find(1), t.context.tree.findAncestor(3))
+  t.is(t.context.tree.find(1), t.context.tree.findAncestor(1))
+  t.is(t.context.tree.find(5), t.context.tree.findAncestor(10))
+  t.is(t.context.tree.find(99), null)
 })
 
 test('it count items', t => {
