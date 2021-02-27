@@ -133,17 +133,69 @@ test('it updates item', t => {
   t.is(t.context.tree.find(2).type, 'updated')
 })
 
-test('it deletes root item', t => {
+test('it deletes item', t => {
   t.not(t.context.tree.delete(12), null)
   t.is(t.context.tree.count(), 11)
-})
 
-test('it deletes children item', t => {
-  t.not(t.context.tree.delete(4), null)
-  t.is(t.context.tree.count(), 13)
-})
-
-test('it returns null when deleting unexisting item', t => {
   t.is(t.context.tree.delete(99), null)
-  t.is(t.context.tree.count(), 14)
+  t.is(t.context.tree.count(), 11)
+
+  t.not(t.context.tree.delete(4), null)
+  t.is(t.context.tree.count(), 10)
+})
+
+test('it inserts item after child', t => {
+  t.context.tree.insertAfter(2, { id: 222, message: 'added after first' })
+  t.is(t.context.tree.countFrom(1), 4)
+  t.is(t.context.tree.siblings(222).prevItem.id, 2)
+  t.is(t.context.tree.siblings(222).nextItem.id, 3)
+  t.truthy(t.context.tree.find(222).hasOwnProperty('_parent'))
+
+  t.context.tree.insertAfter(4, { id: 444, message: 'added after last' })
+  t.is(t.context.tree.countFrom(1), 5)
+  t.is(t.context.tree.siblings(444).prevItem.id, 4)
+  t.is(t.context.tree.siblings(444).nextItem, null)
+  t.truthy(t.context.tree.find(444).hasOwnProperty('_parent'))
+})
+
+test('it inserts item after root', t => {
+  t.context.tree.insertAfter(1, { id: 111, message: 'added after first' })
+  t.is(t.context.tree.count(), 15)
+  t.is(t.context.tree.siblings(111).prevItem.id, 1)
+  t.is(t.context.tree.siblings(111).nextItem.id, 5)
+  t.truthy(t.context.tree.find(11).hasOwnProperty('_parent'))
+
+  t.context.tree.insertAfter(12, { id: 1212, message: 'added after last' })
+  t.is(t.context.tree.count(), 16)
+  t.is(t.context.tree.siblings(1212).prevItem.id, 12)
+  t.is(t.context.tree.siblings(1212).nextItem, null)
+  t.truthy(t.context.tree.find(1212).hasOwnProperty('_parent'))
+})
+
+test('it inserts item before child', t => {
+  t.context.tree.insertBefore(2, { id: 222, type: 'added before first' })
+  t.is(t.context.tree.count(), 15)
+  t.is(t.context.tree.siblings(222).prevItem, null)
+  t.is(t.context.tree.siblings(222).nextItem.id, 2)
+  t.truthy(t.context.tree.find(222).hasOwnProperty('_parent'))
+
+  t.context.tree.insertBefore(4, { id: 444, type: 'added before last' })
+  t.is(t.context.tree.count(), 16)
+  t.is(t.context.tree.siblings(444).prevItem.id, 3)
+  t.is(t.context.tree.siblings(444).nextItem.id, 4)
+  t.truthy(t.context.tree.find(444).hasOwnProperty('_parent'))
+})
+
+test('it inserts item before root', t => {
+  t.context.tree.insertBefore(1, { id: 111, type: 'added before first' })
+  t.is(t.context.tree.count(), 15)
+  t.is(t.context.tree.siblings(111).prevItem, null)
+  t.is(t.context.tree.siblings(111).nextItem.id, 1)
+  t.truthy(t.context.tree.find(111).hasOwnProperty('_parent'))
+
+  t.context.tree.insertBefore(12, { id: 1212, type: 'added before last' })
+  t.is(t.context.tree.count(), 16)
+  t.is(t.context.tree.siblings(1212).prevItem.id, 5)
+  t.is(t.context.tree.siblings(1212).nextItem.id, 12)
+  t.truthy(t.context.tree.find(1212).hasOwnProperty('_parent'))
 })

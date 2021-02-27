@@ -118,6 +118,14 @@ tree.count() // returns 20 since {id: 111} as two children
 tree.delete(-1) // returns null
 ```
 
+### Insert before or after element
+
+```
+tree.insertAfter(1, toInsert) // returns EntriesTree's instance
+tree.insertBefore(111, toInsert) // same as above
+tree.insertAfter(-1, toInsert) // can't insert after an unexisting element
+```
+
 ### Get element's parent
 
 ```js
@@ -140,7 +148,8 @@ tree.siblings(-1)
 ### Loop over flattened elements
 
 ```js
-tree.iterable() // returns [{id: 1, ...}, {id: 2, ...}, {id: 3, ...}, ...]
+tree.iterable()
+// returns [{id: 1, ...}, {id: 2, ...}, {id: 3, ...}, ...]
 ```
 
 ### Deep clone a collection
@@ -166,15 +175,14 @@ collection[0].foo !== tree.find(1).foo
 
 ⬆️ [Top](#entriestreejs) ➡️ [Tests](#tests)
 
+Methods meant to be private are not listed. Eg: `isTheOne`, `isNode`, `isRoot`, etc
+
 | Method | Params | Return |
 |--------|--------|--------|
 | `constructor` | `{Object[]} collection = []`, `{string} id = 'id'`, `{string} childkey` | `{EntriesTree}` |
 | `setCollection` | `{Object[]} collection = []`, `{boolean} clone` | `{EntriesTree}` |
 | `getCollection` |  | `{Object[]}` |
 | `clone` | `{?Object[]} collection = null` | `{Object[]}` |
-| `isTheOne` | `{Object,number,string} findable`, `{Object} comparable` | `{boolean}` |
-| `isNode` | `{Object} item` | `{boolean}` |
-| `parentize` | `{Object[]} elements` | `{Object[]}` |
 | `iterable` | `{Object[]}` |  |
 | `count` | | `@returns {number}` |
 | `countFrom` | `{Object,string,number} toFind` | `{number}` |
@@ -182,6 +190,8 @@ collection[0].foo !== tree.find(1).foo
 | `findAncestor` | `{Object,string,number} toFind` | `{?Object}` |
 | `update` | `{Object,string,number} toFind`, `{function} updater` | `{EntriesTree}` |
 | `delete` | `{Object,string,number} toFind` | `{?Object}` |
+| `insertAfter` | `{Object,string,number} toFind`, `{Object} toInsert` | `{EntriesTree}` |
+| `insertBefore` | `{Object,string,number} toFind`, `{Object} toInsert` | `{EntriesTree}` |
 | `parent` | `{Object,string,number} toFind` | `{?Object}` |
 | `siblings` | `{Object,string,number} toFind` | `{?Object}` |
 

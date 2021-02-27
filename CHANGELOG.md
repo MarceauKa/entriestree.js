@@ -5,6 +5,7 @@
 - Add `clone` method and `setCollection` now accepts a `clone` argument
 - Add `countFrom` method
 - Add `findAncestor` method
+- Add `insertAfter` and `insertBefore` methods
 - API description in readme
 - Sample data used in readme can be found in `fixtures/readmeCollection.js`
 

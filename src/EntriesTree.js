@@ -83,6 +83,14 @@ export default class EntriesTree {
   }
 
   /**
+   * @param {Object} item
+   * @returns {boolean}
+   */
+  isRoot (item) {
+    return item.hasOwnProperty('_deepness') && item._deepness === 0
+  }
+
+  /**
    * @param {Object[]} elements
    * @returns {Object[]}
    */
@@ -337,5 +345,51 @@ export default class EntriesTree {
     siblings.prevItem = collection[index - 1] || null
 
     return siblings
+  }
+
+  /**
+   * @param {Object|string|number} toFind
+   * @param {Object} toInsert
+   * @returns {EntriesTree}
+   */
+  insertAfter (toFind, toInsert) {
+    toFind = this.find(toFind)
+
+    let parentCollection = toFind._parent ? this.parent(toFind)[this.childKey] : this.collection
+    parentCollection.splice(parentCollection.indexOf(toFind) + 1, 0, toInsert)
+
+    if (toFind._parent) {
+      this.update(toFind._parent, (item) => {
+        item[this.childKey] = parentCollection
+        return item
+      })
+
+      return this
+    }
+
+    return this.setCollection(parentCollection)
+  }
+
+  /**
+   * @param {Object|string|number} toFind
+   * @param {Object} toInsert
+   * @returns {EntriesTree}
+   */
+  insertBefore (toFind, toInsert) {
+    toFind = this.find(toFind)
+
+    let parentCollection = toFind._parent ? this.parent(toFind)[this.childKey] : this.collection
+    parentCollection.splice(parentCollection.indexOf(toFind), 0, toInsert)
+
+    if (toFind._parent) {
+      this.update(toFind._parent, (item) => {
+        item[this.childKey] = parentCollection
+        return item
+      })
+
+      return this
+    }
+
+    return this.setCollection(parentCollection)
   }
 }
