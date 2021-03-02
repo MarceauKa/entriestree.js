@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Unreleased
+## 0.4.0 (2021-03-02)
 
 - ⚠️ `siblings` method is now `findSiblings`
 - ⚠️ `parent` method is now `findParent`
