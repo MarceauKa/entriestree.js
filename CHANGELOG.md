@@ -4,6 +4,7 @@
 
 - ⚠️ `siblings` method is now `findSiblings`
 - ⚠️ `parent` method is now `findParent`
+- Performance improvements on `find` and `update` methods
 
 ## 0.3.0 (2021-02-27)
 

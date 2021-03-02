@@ -188,7 +188,7 @@ export default class EntriesTree {
    * @returns {?Object}
    */
   find (toFind) {
-    const invokable = (toFind, elements, parent = null) => {
+    const invokable = (elements, parent = null) => {
       let found = null
 
       elements.some(item => {
@@ -201,7 +201,7 @@ export default class EntriesTree {
 
           return false
         } else if (this.isNode(item)) {
-          found = invokable(toFind, item[this.childKey], item)
+          found = invokable(item[this.childKey], item)
 
           return found !== null
         }
@@ -210,7 +210,7 @@ export default class EntriesTree {
       return found
     }
 
-    return invokable(toFind, this.collection)
+    return invokable(this.collection)
   }
 
   /**
@@ -286,7 +286,7 @@ export default class EntriesTree {
   update (toFind, updater) {
     toFind = this.find(toFind)
 
-    const invokable = (updater, elements) => {
+    const invokable = (elements) => {
       let stack = []
 
       elements.forEach(item => {
@@ -295,7 +295,7 @@ export default class EntriesTree {
         }
 
         if (this.isNode(item)) {
-          item[this.childKey] = invokable(updater, item[this.childKey])
+          item[this.childKey] = invokable(item[this.childKey])
         }
 
         stack.push(item)
@@ -305,7 +305,7 @@ export default class EntriesTree {
     }
 
     if (toFind) {
-      this.setCollection(invokable(updater, this.collection))
+      this.setCollection(invokable(this.collection))
     }
 
     return this
