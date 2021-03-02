@@ -217,6 +217,49 @@ export default class EntriesTree {
    * @param {Object|string|number} toFind
    * @returns {?Object}
    */
+  findSiblings (toFind) {
+    toFind = this.find(toFind)
+
+    let siblings = {
+      prevItem: null,
+      nextItem: null
+    }
+
+    if (!toFind) {
+      return siblings
+    }
+
+    let collection = toFind._parent ? this.find(toFind._parent)[this.childKey] : this.collection
+    let index = collection.indexOf(toFind)
+
+    if (index === -1) {
+      return siblings
+    }
+
+    siblings.nextItem = collection[index + 1] || null
+    siblings.prevItem = collection[index - 1] || null
+
+    return siblings
+  }
+
+  /**
+   * @param {Object|string|number} toFind
+   * @returns {?Object}
+   */
+  findParent (toFind) {
+    toFind = this.find(toFind)
+
+    if (toFind && toFind._parent) {
+      return this.find(toFind._parent)
+    }
+
+    return null
+  }
+
+  /**
+   * @param {Object|string|number} toFind
+   * @returns {?Object}
+   */
   findAncestor (toFind) {
     toFind = this.find(toFind)
 
@@ -306,56 +349,13 @@ export default class EntriesTree {
 
   /**
    * @param {Object|string|number} toFind
-   * @returns {?Object}
-   */
-  parent (toFind) {
-    toFind = this.find(toFind)
-
-    if (toFind && toFind._parent) {
-      return this.find(toFind._parent)
-    }
-
-    return null
-  }
-
-  /**
-   * @param {Object|string|number} toFind
-   * @returns {?Object}
-   */
-  siblings (toFind) {
-    toFind = this.find(toFind)
-
-    let siblings = {
-      prevItem: null,
-      nextItem: null
-    }
-
-    if (!toFind) {
-      return siblings
-    }
-
-    let collection = toFind._parent ? this.find(toFind._parent)[this.childKey] : this.collection
-    let index = collection.indexOf(toFind)
-
-    if (index === -1) {
-      return siblings
-    }
-
-    siblings.nextItem = collection[index + 1] || null
-    siblings.prevItem = collection[index - 1] || null
-
-    return siblings
-  }
-
-  /**
-   * @param {Object|string|number} toFind
    * @param {Object} toInsert
    * @returns {EntriesTree}
    */
   insertAfter (toFind, toInsert) {
     toFind = this.find(toFind)
 
-    let parentCollection = toFind._parent ? this.parent(toFind)[this.childKey] : this.collection
+    let parentCollection = toFind._parent ? this.findParent(toFind)[this.childKey] : this.collection
     parentCollection.splice(parentCollection.indexOf(toFind) + 1, 0, toInsert)
 
     if (toFind._parent) {
@@ -378,7 +378,7 @@ export default class EntriesTree {
   insertBefore (toFind, toInsert) {
     toFind = this.find(toFind)
 
-    let parentCollection = toFind._parent ? this.parent(toFind)[this.childKey] : this.collection
+    let parentCollection = toFind._parent ? this.findParent(toFind)[this.childKey] : this.collection
     parentCollection.splice(parentCollection.indexOf(toFind), 0, toInsert)
 
     if (toFind._parent) {

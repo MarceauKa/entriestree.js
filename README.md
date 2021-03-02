@@ -66,12 +66,8 @@ const tree = new EntriesTree(collection, 'id', 'children')
 Properties starting with `_` are added by the library.
 
 ```js
-tree.find(11)
-// returns {id: 11, children: [{id: 110, ...}, {id: 111, ...}], _parent: 1, _deepness: 1}
-tree.find(collection[0].children[1])
-// same as above (collection[0] => {id: 1}, children[1] => {id: 11})
-
-tree.find(3) // returns {id: 3, _parent: null, _deepness: 0, ...}
+tree.find(11) // returns {id: 11, children: [{id: 110, ...}, ...]}
+tree.find(3) // returns {id: 3, ...}
 tree.find(-1) // returns null
 ```
 
@@ -88,11 +84,8 @@ tree.findAncestor(-1) // returns null
 It's super easy to get the collection length (recursively).
 
 ```js
-tree.count()
-// returns 23 in our sample data
-
-tree.countFrom(11)
-// returns 5, item #11 has 3 direct children and #111 has 2 children
+tree.count() // returns 23
+tree.countFrom(11) // returns 5
 ````
 
 ### Update element
@@ -120,28 +113,27 @@ tree.delete(-1) // returns null
 
 ### Insert before or after element
 
-```
+```js
 tree.insertAfter(1, toInsert) // returns EntriesTree's instance
 tree.insertBefore(111, toInsert) // same as above
 tree.insertAfter(-1, toInsert) // can't insert after an unexisting element
 ```
 
-### Get element's parent
+### Find element's parent
 
 ```js
-tree.parent(110) // returns {id: 1, children: [...], ...}
-tree.parent(collection[0].children[1].children[0]) // same as above
-tree.parent(4) // returns null because {id: 4} is a root element
+tree.findParent(110) // returns {id: 1, children: [...], ...}
+tree.findParent(4) // returns null because {id: 4} is a root element
 ```
 
-### Get element's siblings
+### Find element's siblings
 
 ```js
-tree.siblings(1)
+tree.findSiblings(1)
 // returns {prevItem: null, nextItem: {id: 2, ...}}
-tree.siblings(111)
+tree.findSiblings(111)
 // returns {prevItem: {id: 110, ...}, nextItem: {id: 112, ...}}
-tree.siblings(-1)
+tree.findSiblings(-1)
 // returns {prevItem: null, nextItem: null}
 ```
 
@@ -187,13 +179,13 @@ Methods meant to be private are not listed. Eg: `isTheOne`, `isNode`, `isRoot`, 
 | `count` | | `@returns {number}` |
 | `countFrom` | `{Object,string,number} toFind` | `{number}` |
 | `find` | `{Object,string,number} toFind` | `{?Object}` |
+| `findParent` | `{Object,string,number} toFind` | `{?Object}` |
+| `findSiblings` | `{Object,string,number} toFind` | `{?Object}` |
 | `findAncestor` | `{Object,string,number} toFind` | `{?Object}` |
 | `update` | `{Object,string,number} toFind`, `{function} updater` | `{EntriesTree}` |
 | `delete` | `{Object,string,number} toFind` | `{?Object}` |
 | `insertAfter` | `{Object,string,number} toFind`, `{Object} toInsert` | `{EntriesTree}` |
 | `insertBefore` | `{Object,string,number} toFind`, `{Object} toInsert` | `{EntriesTree}` |
-| `parent` | `{Object,string,number} toFind` | `{?Object}` |
-| `siblings` | `{Object,string,number} toFind` | `{?Object}` |
 
 # Tests
 

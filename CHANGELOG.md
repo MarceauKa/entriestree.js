@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Unreleased
+
+- ⚠️ `siblings` method is now `findSiblings`
+- ⚠️ `parent` method is now `findParent`
+
 ## 0.3.0 (2021-02-27)
 
 - Add `clone` method and `setCollection` now accepts a `clone` argument
