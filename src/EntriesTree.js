@@ -313,6 +313,66 @@ export default class EntriesTree {
 
   /**
    * @param {Object|string|number} toFind
+   * @param {function} updater
+   * @returns {EntriesTree}
+   */
+  updateUp (toFind, updater) {
+    toFind = this.find(toFind)
+
+    const invokable = (element, updater) => {
+      element = updater(element)
+
+      if (element._parent) {
+        invokable(this.findParent(element), updater)
+      }
+
+      return element
+    }
+
+    if (toFind) {
+      this.update(toFind, (item) => {
+        invokable(item, updater)
+
+        return item
+      })
+    }
+
+    return this
+  }
+
+  /**
+   * @param {Object|string|number} toFind
+   * @param {function} updater
+   * @returns {EntriesTree}
+   */
+  updateDown (toFind, updater) {
+    toFind = this.find(toFind)
+
+    const invokable = (element, updater) => {
+      element = updater(element)
+
+      if (this.isNode(element)) {
+        element[this.childKey].forEach(item => {
+          invokable(item, updater)
+        })
+      }
+
+      return element
+    }
+
+    if (toFind) {
+      this.update(toFind, (item) => {
+        invokable(item, updater)
+
+        return item
+      })
+    }
+
+    return this
+  }
+
+  /**
+   * @param {Object|string|number} toFind
    * @returns {?Object}
    */
   delete (toFind) {

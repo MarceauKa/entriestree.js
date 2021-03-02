@@ -133,6 +133,34 @@ test('it updates item', t => {
   t.is(t.context.tree.find(2).type, 'updated')
 })
 
+test('it updates item up', t => {
+  t.context.tree.updateUp(8, (item) => {
+    item.foo = 'bar'
+    return item
+  })
+
+  t.is(t.context.tree.find(8).foo, 'bar')
+  t.is(t.context.tree.find(7).foo, 'bar')
+  t.is(t.context.tree.find(5).foo, 'bar')
+
+  t.falsy(t.context.tree.find(1).hasOwnProperty('foo'))
+  t.falsy(t.context.tree.find(6).hasOwnProperty('foo'))
+})
+
+test('it updates item down', t => {
+  t.context.tree.updateDown(7, (item) => {
+    item.bar = 'foo'
+    return item
+  })
+
+  t.is(t.context.tree.find(7).bar, 'foo')
+  t.is(t.context.tree.find(8).bar, 'foo')
+  t.is(t.context.tree.find(10).bar, 'foo')
+
+  t.falsy(t.context.tree.find(1).hasOwnProperty('bar'))
+  t.falsy(t.context.tree.find(6).hasOwnProperty('bar'))
+})
+
 test('it deletes item', t => {
   t.not(t.context.tree.delete(12), null)
   t.is(t.context.tree.count(), 11)
@@ -146,12 +174,14 @@ test('it deletes item', t => {
 
 test('it inserts item after child', t => {
   t.context.tree.insertAfter(2, { id: 222, message: 'added after first' })
+
   t.is(t.context.tree.countFrom(1), 4)
   t.is(t.context.tree.findSiblings(222).prevItem.id, 2)
   t.is(t.context.tree.findSiblings(222).nextItem.id, 3)
   t.truthy(t.context.tree.find(222).hasOwnProperty('_parent'))
 
   t.context.tree.insertAfter(4, { id: 444, message: 'added after last' })
+
   t.is(t.context.tree.countFrom(1), 5)
   t.is(t.context.tree.findSiblings(444).prevItem.id, 4)
   t.is(t.context.tree.findSiblings(444).nextItem, null)
@@ -160,12 +190,14 @@ test('it inserts item after child', t => {
 
 test('it inserts item after root', t => {
   t.context.tree.insertAfter(1, { id: 111, message: 'added after first' })
+
   t.is(t.context.tree.count(), 15)
   t.is(t.context.tree.findSiblings(111).prevItem.id, 1)
   t.is(t.context.tree.findSiblings(111).nextItem.id, 5)
   t.truthy(t.context.tree.find(11).hasOwnProperty('_parent'))
 
   t.context.tree.insertAfter(12, { id: 1212, message: 'added after last' })
+
   t.is(t.context.tree.count(), 16)
   t.is(t.context.tree.findSiblings(1212).prevItem.id, 12)
   t.is(t.context.tree.findSiblings(1212).nextItem, null)
@@ -174,12 +206,14 @@ test('it inserts item after root', t => {
 
 test('it inserts item before child', t => {
   t.context.tree.insertBefore(2, { id: 222, type: 'added before first' })
+
   t.is(t.context.tree.count(), 15)
   t.is(t.context.tree.findSiblings(222).prevItem, null)
   t.is(t.context.tree.findSiblings(222).nextItem.id, 2)
   t.truthy(t.context.tree.find(222).hasOwnProperty('_parent'))
 
   t.context.tree.insertBefore(4, { id: 444, type: 'added before last' })
+
   t.is(t.context.tree.count(), 16)
   t.is(t.context.tree.findSiblings(444).prevItem.id, 3)
   t.is(t.context.tree.findSiblings(444).nextItem.id, 4)
@@ -188,12 +222,14 @@ test('it inserts item before child', t => {
 
 test('it inserts item before root', t => {
   t.context.tree.insertBefore(1, { id: 111, type: 'added before first' })
+
   t.is(t.context.tree.count(), 15)
   t.is(t.context.tree.findSiblings(111).prevItem, null)
   t.is(t.context.tree.findSiblings(111).nextItem.id, 1)
   t.truthy(t.context.tree.find(111).hasOwnProperty('_parent'))
 
   t.context.tree.insertBefore(12, { id: 1212, type: 'added before last' })
+
   t.is(t.context.tree.count(), 16)
   t.is(t.context.tree.findSiblings(1212).prevItem.id, 5)
   t.is(t.context.tree.findSiblings(1212).nextItem.id, 12)

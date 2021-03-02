@@ -79,6 +79,24 @@ tree.findAncestor(1) // returns {id: 1, ...}
 tree.findAncestor(-1) // returns null
 ```
 
+### Find element's parent
+
+```js
+tree.findParent(110) // returns {id: 1, children: [...], ...}
+tree.findParent(4) // returns null because {id: 4} is a root element
+```
+
+### Find element's siblings
+
+```js
+tree.findSiblings(1)
+// returns {prevItem: null, nextItem: {id: 2, ...}}
+tree.findSiblings(111)
+// returns {prevItem: {id: 110, ...}, nextItem: {id: 112, ...}}
+tree.findSiblings(-1)
+// returns {prevItem: null, nextItem: null}
+```
+
 ### Count elements
 
 It's super easy to get the collection length (recursively).
@@ -101,6 +119,20 @@ tree.update(221, (item) => {
 tree.find(221) // returns {id: 221, foo: 'bar', ...}
 ```
 
+### Update element recursively
+
+```js
+tree.updateUp(110, (item) => {
+  item.foo = 'bar'
+  return item
+}) // updates 110, 11 and 1 
+
+tree.updateDown(111, (item) => {
+  item.bar = 'baz'
+  return item
+}) // updates 111, 1110 and 1111 
+```
+
 ⚠️ Don't forget to return the updated element in your updater function!
 
 ### Delete element
@@ -117,24 +149,6 @@ tree.delete(-1) // returns null
 tree.insertAfter(1, toInsert) // returns EntriesTree's instance
 tree.insertBefore(111, toInsert) // same as above
 tree.insertAfter(-1, toInsert) // can't insert after an unexisting element
-```
-
-### Find element's parent
-
-```js
-tree.findParent(110) // returns {id: 1, children: [...], ...}
-tree.findParent(4) // returns null because {id: 4} is a root element
-```
-
-### Find element's siblings
-
-```js
-tree.findSiblings(1)
-// returns {prevItem: null, nextItem: {id: 2, ...}}
-tree.findSiblings(111)
-// returns {prevItem: {id: 110, ...}, nextItem: {id: 112, ...}}
-tree.findSiblings(-1)
-// returns {prevItem: null, nextItem: null}
 ```
 
 ### Loop over flattened elements
@@ -183,6 +197,8 @@ Methods meant to be private are not listed. Eg: `isTheOne`, `isNode`, `isRoot`, 
 | `findSiblings` | `{Object,string,number} toFind` | `{?Object}` |
 | `findAncestor` | `{Object,string,number} toFind` | `{?Object}` |
 | `update` | `{Object,string,number} toFind`, `{function} updater` | `{EntriesTree}` |
+| `updateUp` | `{Object,string,number} toFind`, `{function} updater` | `{EntriesTree}` |
+| `updateDown` | `{Object,string,number} toFind`, `{function} updater` | `{EntriesTree}` |
 | `delete` | `{Object,string,number} toFind` | `{?Object}` |
 | `insertAfter` | `{Object,string,number} toFind`, `{Object} toInsert` | `{EntriesTree}` |
 | `insertBefore` | `{Object,string,number} toFind`, `{Object} toInsert` | `{EntriesTree}` |
